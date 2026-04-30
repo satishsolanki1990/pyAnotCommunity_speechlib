@@ -3,7 +3,7 @@ name = "speechlib"
 version = "2.0.2"
 description = "Speechlib is a library that unifies speaker diarization, transcription and speaker recognition in a single pipeline to create transcripts for audio conversations with actual speaker names and time tags. This library also contains audio preprocessor functions."
 readme = "library.md"
-requires-python = ">=3.10"
+requires-python = ">=3.13,<4"
 
 authors = [
     { name = "Navod Peiris", email = "navodpeiris1234@gmail.com" }
@@ -29,23 +29,25 @@ classifiers = [
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.10",
-    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.13",
 ]
 
 dependencies = [
+    "audioop-lts>=0.2.1",
     "accelerate>=1.12.0",
     "assemblyai>=0.50.0",
     "faster-whisper>=1.2.1",
     "huggingface-hub==0.36.0",
-    "numpy==1.26.4",
+    "ml-dtypes>=0.5.0",
+    "numpy>=2.1.0,<3",
     "openai-whisper>=20250625",
-    "pyannote-audio==3.4.0",
-    "torch>=2.2,<2.8.0",
-    "torchaudio>=2.2,<2.8.0",
+    # 4.x matches HF community-1 config (PLDA); 3.4 raises TypeError on param `plda`.
+    "pyannote-audio>=4.0.4,<5",
+    "torch>=2.11,<3",
+    "torchaudio>=2.11,<3",
     "pydub>=0.25.1",
     "soundfile>=0.13.1",
-    "speechbrain==1.0.3",
+    "speechbrain==1.1.0",
     "transformers==4.57.6",
 ]
 
@@ -61,6 +63,10 @@ Homepage = "https://github.com/NavodPeiris/speechlib"
 Repository = "https://github.com/NavodPeiris/speechlib"
 Issues = "https://github.com/NavodPeiris/speechlib/issues"
 Documentation = "https://github.com/NavodPeiris/speechlib#readme"
+
+[tool.uv]
+# NeMo pins kaldialign 0.9.1, which has no macOS arm64 + cp313 wheel; 0.9.3 does.
+override-dependencies = ["kaldialign>=0.9.3"]
 
 [build-system]
 requires = ["hatchling"]
